@@ -1,0 +1,38 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+    background: white;
+    color: #333;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+}
+
+.header {
+    background-color: #555;
+    box-shadow: 0 4px 2px -2px #AAA;
+    color: white;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 10px;
+}
+
+.card-container {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 0 1px 5px #999;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #FAFAFA;
+    margin: 100px auto;
+    max-width: 205px;
+    padding: 10px;
+    width: 205px;
+}

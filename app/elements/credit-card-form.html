@@ -1,0 +1,150 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="credit-card-form">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.simplify.com/commerce/v1/simplify.js"></script>
+<template>
+  <style>
+    
+
+    button {
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      display: inline-block;
+      height: 30px;
+      text-align: center;
+      text-decoration: none solid rgb(255, 255, 255);
+      text-rendering: optimizelegibility;
+      white-space: nowrap;
+      width: 100%;
+      perspective-origin: 76.5px 22.5px;
+      transform-origin: 76.5px 22.5px;
+      background: rgba(0, 0, 0, 0) linear-gradient(rgb(55, 170, 234), rgb(17, 126, 210)) repeat scroll 0% 0% / auto padding-box border-box;
+      border-top: 1px solid rgb(25, 146, 218);
+      border-right: 1px solid rgb(19, 126, 198);
+      border-bottom: 1px solid rgb(13, 106, 178);
+      border-left: 1px solid rgb(19, 126, 198);
+      border-radius: 3px;
+      outline: rgb(255, 255, 255) none 0px;
+      padding: 6.000400066375732px 16.000600814819336px 7px;
+      margin-top: 20px;
+    } 
+
+
+
+    input {
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        padding: 5px 10px;
+    }
+
+    label {
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        display: block;
+        font-size: 16px;
+        font-weight: 400;
+        padding-bottom: 3px;
+        padding-left: 3px;
+        margin-top: 20px;
+    }
+
+    fieldset {
+        border: none;
+        padding: 0;
+    }
+  </style>
+  <fieldset class="credit-card-form" attributes="key">
+    <label for="cc-number">Credit Card Number</label>
+    <input id="cc-number" type="text" />
+    <label for"cc-cvc">CVC</label>
+    <input id="cc-cvc" type="text" />
+    <label for"cc-exp-month">Expiry Date</label>
+    <select id="cc-exp-month">
+      <option value="01">Jan</option>
+      <option value="02">Feb</option>
+      <option value="03">Mar</option>
+      <option value="04">Apr</option>
+      <option value="05">May</option>
+      <option value="06">Jun</option>
+      <option value="07">Jul</option>
+      <option value="08">Aug</option>
+      <option value="09">Sep</option>
+      <option value="10">Oct</option>
+      <option value="11">Nov</option>
+      <option value="12">Dec</option>
+    </select>
+    <select id="cc-exp-year">
+      <option value="14">2014</option>
+      <option value="15">2015</option>
+      <option value="16">2016</option>
+      <option value="17">2017</option>
+      <option value="18">2018</option>
+      <option value="19">2019</option>
+      <option value="20">2020</option>
+      <option value="21">2021</option>
+      <option value="22">2022</option>
+    </select>
+  </fieldset>
+  <button id="process-payment-btn" label="Process Payment" on-click="{{generateToken}}">Process Payment</button>
+  <!-- <button id="process-payment-btn" on-click="{{generateToken}}">Process Payment</button> -->
+
+</div>
+</template>
+<script>
+Polymer('credit-card-form', {
+  key: '',
+  generateToken: function(event, detail, sender) {
+
+      // Disable the submit button
+      var creitCardForm = this,
+      button = creitCardForm.$["process-payment-btn"];
+      button.setAttribute("disabled", "disabled");
+      // Generate a card token & handle the response
+
+      SimplifyCommerce.generateToken({
+        key: creitCardForm.getAttribute('key'),
+        card: {
+          number: creitCardForm.$["cc-number"].value,
+          cvc: creitCardForm.$["cc-cvc"].value,
+          expMonth: creitCardForm.$["cc-exp-month"].value,
+          expYear: creitCardForm.$["cc-exp-year"].value
+        }
+      }, function(data){
+        creitCardForm.simplifyResponseHandler(data, button)
+      });
+      // Prevent the form from submitting
+      return false;
+    },
+    simplifyResponseHandler: function(data, button){
+      var $paymentForm = $("#simplify-payment-form");
+        // Remove all previous errors
+        $(".error").remove();
+        // Check for errors
+        if (data.error) {
+            // Show any validation errors
+            if (data.error.code == "validation") {
+              var fieldErrors = data.error.fieldErrors,
+              fieldErrorsLength = fieldErrors.length,
+              errorList = "";
+              for (var i = 0; i < fieldErrorsLength; i++) {
+                errorList += "<div class='error'>Field: '" + fieldErrors[i].field +
+                "' is invalid - " + fieldErrors[i].message + "</div>";
+              }
+                // Display the errors
+                $paymentForm.after(errorList);
+              }
+            // Re-enable the submit button
+            button.removeAttribute("disabled");
+          } else {
+            // The token contains id, last4, and card type
+            var token = data["id"];
+            button.removeAttribute("disabled", "disabled");
+            alert(token);
+          }
+        }  
+      });
+</script>
+</polymer-element>
