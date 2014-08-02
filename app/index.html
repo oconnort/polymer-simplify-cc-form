@@ -17,15 +17,30 @@
     <!-- Place your HTML imports here -->
     <script src="bower_components/platform/platform.js"></script>
     <link rel="import" href="elements/credit-card-form.html">
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 </head>
 <body unresolved>
-    
-    <header class="header">
-        <h1>Polymer Credit Card Form Element</h1>
-    </header>
-    <div class="card-container">
-        <credit-card-form key="sbpb_MjIwM2Y0NDQtY2IwYS00YWVhLTliNTUtNzZhOGM2YTYyNWU5" />
-    </div>    
+
+    <div class="wrapper">
+        <div class="info-container">
+            <h1>Simplify Credit Card Element</h1>
+            <p class="sub-title">A simple credit card form built with Simplify</p>
+            <a class="button" href="https://github.com/oconnort/polymer-simplify-cc-form/archive/master.zip">Download the Source Code</a>
+            <div class="instructions">
+                <p>Import the element</p>
+                <code class="prettyprint">
+                    &lt;link rel="import" href="elements/credit-card-form.html"&gt;
+                </code>
+                <p>Use the element</p>
+                <code class="prettyprint">
+                    &lt;credit-card-form key="MY_PUBLIC_KEY" /&gt;
+                </code>
+            </div>
+        </div>
+        <div class="card-container">
+            <credit-card-form key="sbpb_MjIwM2Y0NDQtY2IwYS00YWVhLTliNTUtNzZhOGM2YTYyNWU5" />
+        </div>    
+    </div>
     
 </body>
 </html>

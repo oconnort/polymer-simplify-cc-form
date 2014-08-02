@@ -1,3 +1,20 @@
+/* html5doctor.com Reset v1.6.1 (http://html5doctor.com/html-5-reset-stylesheet/) - http://cssreset.com */
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
+body{line-height:1}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+nav ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:none}
+a{margin:0;padding:0;font-size:100%;vertical-align:baseline;background:transparent}
+ins{background-color:#ff9;color:#000;text-decoration:none}
+mark{background-color:#ff9;color:#000;font-style:italic;font-weight:bold}
+del{text-decoration:line-through}
+abbr[title],dfn[title]{border-bottom:1px dotted;cursor:help}
+table{border-collapse:collapse;border-spacing:0}
+hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
+input,select{vertical-align:middle}
+
+/* App Styles */
 html {
   box-sizing: border-box;
 }
@@ -13,14 +30,44 @@ body {
     font-size: 12px;
 }
 
-.header {
-    background-color: #555;
-    box-shadow: 0 4px 2px -2px #AAA;
-    color: white;
-    font-size: 16px;
-    line-height: 16px;
+code {
+    background-color: #FAFAFA;
+    display: block;
+    margin: 10px;
     padding: 10px;
 }
+
+h1 {
+    font-size: 32px;
+    line-height: 120%;
+}
+
+/* Classes */
+
+.button {
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      display: inline-block;
+      height: 30px;
+      font-size: 15px;
+        line-height: 110%;
+      text-align: center;
+      text-decoration: none solid rgb(255, 255, 255);
+      text-rendering: optimizelegibility;
+      white-space: nowrap;
+      width: 100%;
+      perspective-origin: 77px 23px;
+      transform-origin: 77px 23px;
+      background: rgba(0, 0, 0, 0) linear-gradient(rgb(55, 170, 234), rgb(17, 126, 210)) repeat scroll 0% 0% / auto padding-box border-box;
+      border-top: 1px solid rgb(25, 146, 218);
+      border-right: 1px solid rgb(19, 126, 198);
+      border-bottom: 1px solid rgb(13, 106, 178);
+      border-left: 1px solid rgb(19, 126, 198);
+      border-radius: 3px;
+      outline: rgb(255, 255, 255) none 0px;
+      padding: 6px 16px 7px;
+      margin-top: 20px;
+    }
 
 .card-container {
     -moz-border-radius: 3px;
@@ -31,8 +78,35 @@ body {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     background-color: #FAFAFA;
-    margin: 100px auto;
     max-width: 205px;
     padding: 10px;
     width: 205px;
+}
+
+.info-container {
+    max-width: 600px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.instructions {
+    margin-top: 50px;
+}
+
+.sub-title {
+    color: #999;
+    font-size: 16px;
+}
+
+.wrapper {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+
+    margin-top: 100px;
 }
