@@ -9,7 +9,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css styles/main.css -->
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild-->
@@ -17,30 +17,90 @@
     <!-- Place your HTML imports here -->
     <script src="bower_components/platform/platform.js"></script>
     <link rel="import" href="elements/credit-card-form.html">
+    
+    <!-- App Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 </head>
-<body unresolved>
-
-    <div class="wrapper">
-        <div class="info-container">
+<body unresolved ng-app="simplifyCCForm">
+    <div class="bg" />
+    <div class="wrapper" ng-controller="Controller">
+        <div class="info-container shadow rounded">
+            <img alt="avatar" class="avatar shadow" src="https://avatars0.githubusercontent.com/u/522607?v=2&amp;s=460" />
             <h1>Simplify Credit Card Element</h1>
-            <p class="sub-title">A simple credit card form built with Simplify</p>
+            <p class="sub-title">A simple credit card form powered by Simplify</p>
             <a class="button" href="https://github.com/oconnort/polymer-simplify-cc-form/archive/master.zip">Download the Source Code</a>
             <div class="instructions">
                 <p>Import the element</p>
-                <code class="prettyprint">
+                <code class="prettyprint rounded">
                     &lt;link rel="import" href="elements/credit-card-form.html"&gt;
                 </code>
                 <p>Use the element</p>
-                <code class="prettyprint">
+                <code class="prettyprint rounded">
                     &lt;credit-card-form key="MY_PUBLIC_KEY" /&gt;
                 </code>
+                <p>Handle the response</p>
+                <pre class="prettyprint rounded">
+                
+    &lt;script&gt;<br/>
+        // Wait for 'polymer-ready'
+        window.addEventListener('polymer-ready', function(e) {
+            var ccForm = document.querySelector('credit-card-form');
+
+            // listen to token response
+            ccForm.addEventListener('token-response', function(event) {
+                console.log(event.detail.token); // Extract the token value
+
+                // Send token to the server to create the payment
+            });
+        });
+    &lt;/script&gt;
+    
+                </pre>
             </div>
         </div>
-        <div class="card-container">
-            <credit-card-form key="sbpb_MjIwM2Y0NDQtY2IwYS00YWVhLTliNTUtNzZhOGM2YTYyNWU5" />
-        </div>    
+        <div class="card-container shadow rounded">
+            <credit-card-form key="sbpb_MjIwM2Y0NDQtY2IwYS00YWVhLTliNTUtNzZhOGM2YTYyNWU5" data-token-listener></credit-card-form>
+        </div>
+        <div class='token-holder'>
+            <div class='label'>Simplify Card Token</div>
+                <div class="token-wrapper shadow rounded">
+                    <div class='token'>
+                        <span ng-show='token'>{{token}}</span>
+                        <span ng-show='!token' class='italic'>SIMPLIFY_TOKEN</span>
+                    </div>        
+                </div>
+            </div>
+        </div>
     </div>
-    
+<script>
+angular.module('simplifyCCForm', [])
+.controller('Controller', ['$scope', function($scope) {
+    $scope.token;
+}])
+.directive('tokenListener', function(){
+    return {
+        link: function($scope, iElm, iAttrs, controller) {
+            iElm.bind('token-response', function(event, data) {
+              $scope.$apply(function(){
+                console.log(event.originalEvent.detail.token);
+                $scope.token = event.originalEvent.detail.token;  
+            });
+          });    
+        }
+    };
+});
+
+      // Wait for 'polymer-ready'. Ensures the element is upgraded.
+      // window.addEventListener('polymer-ready', function(e) {
+      //   var ccForm = document.querySelector('credit-card-form');
+
+      //   // Respond to events it fires.
+      //   ccForm.addEventListener('token-response', function(event) {
+      //     console.log(event.detail.token);
+      //   });
+
+      // });
+</script>
 </body>
 </html>

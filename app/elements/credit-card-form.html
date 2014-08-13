@@ -58,11 +58,11 @@
   </style>
   <fieldset class="credit-card-form" attributes="key">
     <label for="cc-number">Credit Card Number</label>
-    <input id="cc-number" type="text" />
+    <input id="cc-number" type="text" required />
     <label for"cc-cvc">CVC</label>
     <input id="cc-cvc" type="text" />
     <label for"cc-exp-month">Expiry Date</label>
-    <select id="cc-exp-month">
+    <select id="cc-exp-month" required>
       <option value="01">Jan</option>
       <option value="02">Feb</option>
       <option value="03">Mar</option>
@@ -76,7 +76,7 @@
       <option value="11">Nov</option>
       <option value="12">Dec</option>
     </select>
-    <select id="cc-exp-year">
+    <select id="cc-exp-year" required>
       <option value="14">2014</option>
       <option value="15">2015</option>
       <option value="16">2016</option>
@@ -89,8 +89,6 @@
     </select>
   </fieldset>
   <button id="process-payment-btn" label="Process Payment" on-click="{{generateToken}}">Process Payment</button>
-  <!-- <button id="process-payment-btn" on-click="{{generateToken}}">Process Payment</button> -->
-
 </div>
 </template>
 <script>
@@ -142,7 +140,7 @@ Polymer('credit-card-form', {
             // The token contains id, last4, and card type
             var token = data["id"];
             button.removeAttribute("disabled", "disabled");
-            alert(token);
+            this.fire('token-response', {token: token});
           }
         }  
       });
