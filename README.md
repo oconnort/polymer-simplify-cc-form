@@ -2,6 +2,7 @@
 This is a custom element that enables easy credit card payments with Simplify Commerce.
 
 Ref: http://www.simplify.com/commerce/docs
+Demo: http://oconnort.github.io/
 
 #### Demo Installation
 
