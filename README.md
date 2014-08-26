@@ -23,17 +23,17 @@ grunt serve
 #### Use the Element
 
 Import the element
-```
+```html
 <link rel="import" href="elements/credit-card-form.html">
 ```
 
 Use the element
-```
+```html
 <credit-card-form key="MY_PUBLIC_KEY" />
 ```
 
 Handle the response
-```                
+```javascript                
 <script>
     // Wait for 'polymer-ready'
     window.addEventListener('polymer-ready', function(e) {
