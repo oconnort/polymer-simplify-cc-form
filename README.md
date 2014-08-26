@@ -1,7 +1,7 @@
 ## Simplify Polymer Credit Card Form Element
 This is a custom element that enables easy credit card payments with Simplify Commerce.
 
-### Demo Installation
+#### Demo Installation
 
 Install the bower components
 ```javascript
@@ -18,7 +18,7 @@ Run the app
 grunt serve
 ```
 
-### Use the Element
+#### Use the Element
 
 Import the element
 ```
