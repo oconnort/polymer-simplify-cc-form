@@ -33,7 +33,7 @@ Use the element
 ```
 
 Handle the response
-```javascript                
+```html                
 <script>
     // Wait for 'polymer-ready'
     window.addEventListener('polymer-ready', function(e) {
@@ -44,6 +44,7 @@ Handle the response
             console.log(event.detail.token); // Extract the token value
 
             // Send token to the server to create the payment
+            // https://www.simplify.com/commerce/docs/apidoc/payment
         });
     });
 </script>    
