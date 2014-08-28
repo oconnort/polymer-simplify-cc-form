@@ -5,56 +5,56 @@
 <script type="text/javascript" src="https://www.simplify.com/commerce/v1/simplify.js"></script>
 <template>
   <style>
-    
-
-    button {
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-      display: inline-block;
-      height: 30px;
-      text-align: center;
-      text-decoration: none solid rgb(255, 255, 255);
-      text-rendering: optimizelegibility;
-      white-space: nowrap;
-      width: 100%;
-      perspective-origin: 77px 23px;
-      transform-origin: 77px 23px;
-      background: rgba(0, 0, 0, 0) linear-gradient(rgb(55, 170, 234), rgb(17, 126, 210)) repeat scroll 0% 0% / auto padding-box border-box;
-      border-top: 1px solid rgb(25, 146, 218);
-      border-right: 1px solid rgb(19, 126, 198);
-      border-bottom: 1px solid rgb(13, 106, 178);
-      border-left: 1px solid rgb(19, 126, 198);
-      border-radius: 3px;
-      outline: rgb(255, 255, 255) none 0px;
-      padding: 6px 16px 7px;
-      margin-top: 20px;
-    } 
 
 
+  button {
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    text-align: center;
+    text-decoration: none solid rgb(255, 255, 255);
+    text-rendering: optimizelegibility;
+    white-space: nowrap;
+    width: 100%;
+    perspective-origin: 77px 23px;
+    transform-origin: 77px 23px;
+    background: rgba(0, 0, 0, 0) linear-gradient(rgb(55, 170, 234), rgb(17, 126, 210)) repeat scroll 0% 0% / auto padding-box border-box;
+    border-top: 1px solid rgb(25, 146, 218);
+    border-right: 1px solid rgb(19, 126, 198);
+    border-bottom: 1px solid rgb(13, 106, 178);
+    border-left: 1px solid rgb(19, 126, 198);
+    border-radius: 3px;
+    outline: rgb(255, 255, 255) none 0px;
+    padding: 6px 16px 7px;
+    margin-top: 20px;
+  } 
 
-    input {
-        -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        padding: 5px 10px;
-    }
 
-    label {
-        -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        display: block;
-        font-size: 16px;
-        font-weight: 400;
-        padding-bottom: 3px;
-        padding-left: 3px;
-        margin-top: 20px;
-    }
 
-    fieldset {
-        border: none;
-        padding: 0;
-    }
+  input {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 5px 10px;
+  }
+
+  label {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    margin-top: 20px;
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+  }
   </style>
   <fieldset class="credit-card-form" attributes="key">
     <label for="cc-number">Credit Card Number</label>
@@ -62,31 +62,8 @@
     <label for"cc-cvc">CVC</label>
     <input id="cc-cvc" type="text" />
     <label for"cc-exp-month">Expiry Date</label>
-    <select id="cc-exp-month" required>
-      <option value="01">Jan</option>
-      <option value="02">Feb</option>
-      <option value="03">Mar</option>
-      <option value="04">Apr</option>
-      <option value="05">May</option>
-      <option value="06">Jun</option>
-      <option value="07">Jul</option>
-      <option value="08">Aug</option>
-      <option value="09">Sep</option>
-      <option value="10">Oct</option>
-      <option value="11">Nov</option>
-      <option value="12">Dec</option>
-    </select>
-    <select id="cc-exp-year" required>
-      <option value="14">2014</option>
-      <option value="15">2015</option>
-      <option value="16">2016</option>
-      <option value="17">2017</option>
-      <option value="18">2018</option>
-      <option value="19">2019</option>
-      <option value="20">2020</option>
-      <option value="21">2021</option>
-      <option value="22">2022</option>
-    </select>
+    <select id="cc-exp-month" required></select>
+    <select id="cc-exp-year" required></select>
   </fieldset>
   <button id="process-payment-btn" label="Process Payment" on-click="{{generateToken}}">Process Payment</button>
 </div>
@@ -95,54 +72,98 @@
 Polymer('credit-card-form', {
   key: '',
   generateToken: function(event, detail, sender) {
+    // Disable the submit button
+    var creitCardForm = this,
+    button = creitCardForm.$["process-payment-btn"];
+    button.setAttribute("disabled", "disabled");
+    // Generate a card token & handle the response
 
-      // Disable the submit button
-      var creitCardForm = this,
-      button = creitCardForm.$["process-payment-btn"];
-      button.setAttribute("disabled", "disabled");
-      // Generate a card token & handle the response
+    SimplifyCommerce.generateToken({
+      key: creitCardForm.getAttribute('key'),
+      card: {
+        number: creitCardForm.$["cc-number"].value,
+        cvc: creitCardForm.$["cc-cvc"].value,
+        expMonth: creitCardForm.$["cc-exp-month"].value,
+        expYear: creitCardForm.$["cc-exp-year"].value
+      }
+    }, function(data){
+      creitCardForm.simplifyResponseHandler(data, button)
+    });
+    // Prevent the form from submitting
+    return false;
+  },
+  simplifyResponseHandler: function(data, button) {
+    var $paymentForm = $("#simplify-payment-form");
+    // Remove all previous errors
+    $(".error").remove();
+    
+    // Check for errors
+    if (data.error) {
+      // Show any validation errors
+      if (data.error.code == "validation") {
+        var fieldErrors = data.error.fieldErrors,
+        fieldErrorsLength = fieldErrors.length,
+        errorList = "";
 
-      SimplifyCommerce.generateToken({
-        key: creitCardForm.getAttribute('key'),
-        card: {
-          number: creitCardForm.$["cc-number"].value,
-          cvc: creitCardForm.$["cc-cvc"].value,
-          expMonth: creitCardForm.$["cc-exp-month"].value,
-          expYear: creitCardForm.$["cc-exp-year"].value
+        for (var i = 0; i < fieldErrorsLength; i++) {
+          errorList += "<div class='error'>Field: '" + fieldErrors[i].field +
+          "' is invalid - " + fieldErrors[i].message + "</div>";
         }
-      }, function(data){
-        creitCardForm.simplifyResponseHandler(data, button)
-      });
-      // Prevent the form from submitting
-      return false;
-    },
-    simplifyResponseHandler: function(data, button){
-      var $paymentForm = $("#simplify-payment-form");
-        // Remove all previous errors
-        $(".error").remove();
-        // Check for errors
-        if (data.error) {
-            // Show any validation errors
-            if (data.error.code == "validation") {
-              var fieldErrors = data.error.fieldErrors,
-              fieldErrorsLength = fieldErrors.length,
-              errorList = "";
-              for (var i = 0; i < fieldErrorsLength; i++) {
-                errorList += "<div class='error'>Field: '" + fieldErrors[i].field +
-                "' is invalid - " + fieldErrors[i].message + "</div>";
-              }
-                // Display the errors
-                $paymentForm.after(errorList);
-              }
-            // Re-enable the submit button
-            button.removeAttribute("disabled");
-          } else {
-            // The token contains id, last4, and card type
-            var token = data["id"];
-            button.removeAttribute("disabled", "disabled");
-            this.fire('token-response', {token: token});
-          }
-        }  
-      });
+
+        // Display the errors
+        $paymentForm.after(errorList);
+      }
+
+      // Re-enable the submit button
+      button.removeAttribute("disabled");
+    } else {
+      // The token contains id, last4, and card type
+      var token = data["id"];
+      button.removeAttribute("disabled", "disabled");
+      this.fire('token-response', {token: token});
+    }
+  },
+  ready: function() {
+    setMonthYearDropDowns(this);  
+  }  
+});
+
+/**
+ * Function to set the expiry month & year select dropdowns.
+ * 
+ * @param {[type]} ccForm [description]
+ */
+function setMonthYearDropDowns(ccForm) {
+  var monthSelect = ccForm.$["cc-exp-month"],
+  yearSelect = ccForm.$['cc-exp-year'],
+  months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'],
+  today = new Date(),
+  thisyear = today.getFullYear();
+
+  // set the month select drop down values
+  for (var m = 0; m < 12; m++) {
+    monthSelect.options[m] = new Option(months[m], get2Digits(m + 1));
+  }
+
+  // set the year select drop down values
+  for (var y = 0; y < 15; y++) {
+    yearSelect.options[y]=new Option(thisyear, thisyear.toString().substring(2));
+    thisyear += 1;
+  }
+
+  // select the current month/year values
+  monthSelect.options[today.getMonth()] = new Option(months[today.getMonth()], get2Digits(today.getMonth()), true, true);
+  yearSelect.options[0] = new Option(today.getFullYear(), today.getFullYear().toString().substring(2), true, true);  
+}
+
+/**
+ * Function to ensure 2 digits for a number.
+ * @param  number
+ * @return double digit number
+ */
+function get2Digits(num) {
+  return ("0" + num.toString()).slice(-2);
+}
+
 </script>
 </polymer-element>
